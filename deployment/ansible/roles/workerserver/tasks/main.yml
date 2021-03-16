@@ -1,0 +1,5 @@
+- name: install tibber systemd unit file
+  template: src=tibber.j2 dest=/etc/systemd/system/tibber.service
+
+- name: start tibber
+  systemd: state=started name=tibber daemon_reload=yes

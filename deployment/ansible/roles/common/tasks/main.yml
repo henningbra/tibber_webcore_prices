@@ -1,0 +1,32 @@
+# Common tasks
+
+- name: Enable firewall
+  ufw:
+    state: enabled
+  become: yes
+  register: ufw
+
+- name: Open SSH and close all other ports
+  ufw:
+    rule: allow
+    name: OpenSSH
+    policy: deny
+  become: yes
+  when: ufw.changed
+
+- name: Throttle brute force SSH login attepmpts
+  ufw:
+    rule: limit
+    port: ssh
+    proto: tcp
+  become: yes
+  when: ufw.changed
+
+- name: Update and Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    update_cache: yes
+    cache_valid_time: 86400
+    state: latest
+  become: yes
+  register: apt

@@ -1,0 +1,15 @@
+---
+- hosts: worker
+  user: ubuntu
+
+  # Import vars from root directory
+  pre_tasks:
+  - name: Import variables
+    include_vars:
+      file: .env
+
+  roles:
+    - common
+    - project
+    - workerserver
+

@@ -1,0 +1,12 @@
+[Unit]
+Description=My tibber Scheduler
+After=multi-user.target
+
+[Service]
+Type=idle
+
+WorkingDirectory="{{ PROJECT_PATH }}"
+ExecStart="{{ PROJECT_PATH }}"/venv/python scheduler.py
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,33 @@
+# Install nwa_alert
+
+- name: Install dependencies for NWA_alert
+  apt:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - python-apt
+    - python3-dev
+    - python3-pip
+    - virtualenv
+    - python-setuptools
+  when: apt.changed
+
+- name: Clone project branch {{ PROJECT_VERSION }} from github
+  git:
+    repo: "{{ PROJECT_REPOSITORY }}"
+    dest: "{{ PROJECT_PATH }}"
+    force: yes
+    version: "{{ PROJECT_VERSION }}"
+    accept_hostkey: yes
+    # key_file: /root/.ssh/id_rsa
+  register: project
+
+- name: Pip install -r requirements.txt
+  pip:
+    chdir: "{{ PROJECT_PATH }}"
+    requirements: requirements.txt
+    state: latest
+    virtualenv: venv
+    virtualenv_command: virtualenv
+    virtualenv_python: python3.8
+  when: project.changed
