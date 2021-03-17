@@ -1,15 +1,20 @@
-# Install nwa_alert
+
+
+- name: set timezone to Europe/Oslo
+  timezone:
+    name: Europe/Oslo
 
 - name: Install dependencies for NWA_alert
   apt:
     name: "{{ item }}"
     state: latest
   loop:
-    - python-apt
+    - python3-apt
     - python3-dev
     - python3-pip
-    - virtualenv
-    - python-setuptools
+    - python3-virtualenv
+    - python3-setuptools
+  become: yes
   when: apt.changed
 
 - name: Clone project branch {{ PROJECT_VERSION }} from github
@@ -20,6 +25,7 @@
     version: "{{ PROJECT_VERSION }}"
     accept_hostkey: yes
     # key_file: /root/.ssh/id_rsa
+  become: yes
   register: project
 
 - name: Pip install -r requirements.txt
@@ -29,5 +35,11 @@
     state: latest
     virtualenv: venv
     virtualenv_command: virtualenv
-    virtualenv_python: python3.8
-  when: project.changed
+  become: yes
+  # when: project.changed
+
+- name: Copy in .env file
+  template:
+    src: env.j2
+    dest: "{{ PROJECT_PATH }}/.env"
+  become: yes
