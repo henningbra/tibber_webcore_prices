@@ -1,5 +1,11 @@
 # Common tasks
 
+
+- name: Set timezone to Europe/Oslo
+  timezone:
+    name: Europe/Oslo
+  become: yes
+
 - name: Enable firewall
   ufw:
     state: enabled

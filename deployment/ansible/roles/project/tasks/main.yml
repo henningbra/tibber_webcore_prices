@@ -1,9 +1,4 @@
 
-
-- name: set timezone to Europe/Oslo
-  timezone:
-    name: Europe/Oslo
-
 - name: Install dependencies for NWA_alert
   apt:
     name: "{{ item }}"
