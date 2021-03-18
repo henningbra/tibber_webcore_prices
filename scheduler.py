@@ -6,7 +6,7 @@ from webcore.manager import PriceManager
 class PriceScheduler:
 
     daily = "00:00:05"
-    hourly = "::25"
+    hourly = ":00:25"
 
     def __init__(self):
         self.scheduler = schedule

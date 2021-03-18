@@ -5,5 +5,8 @@
   become: yes
 
 - name: start tibber
-  systemd: state=started name=tibber daemon_reload=yes
+  systemd:
+    daemon_reload: yes
+    state: restarted
+    name: tibber
   become: yes
