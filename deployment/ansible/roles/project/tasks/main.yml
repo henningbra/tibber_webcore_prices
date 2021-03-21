@@ -3,6 +3,7 @@
   apt:
     name: "{{ item }}"
     state: latest
+    update_cache: 86400
   loop:
     - python3-apt
     - python3-dev
@@ -31,10 +32,11 @@
     virtualenv: venv
     virtualenv_command: virtualenv
   become: yes
-  # when: project.changed
+  when: project.changed
 
 - name: Copy in .env file
   template:
     src: env.j2
     dest: "{{ PROJECT_PATH }}/.env"
   become: yes
+  when: project.changed
