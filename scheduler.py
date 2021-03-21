@@ -5,7 +5,7 @@ from webcore.manager import PriceManager
 
 class PriceScheduler:
 
-    daily = "00:00:30"
+    daily = "00:00"
     hourly = ":01"
 
     def __init__(self):
@@ -15,9 +15,9 @@ class PriceScheduler:
 
     def _schedules(self):
         # update today prices
-        self.scheduler.every().day.at(self.daily).do(lambda: self.manager.update_prices())
+        self.scheduler.every().day.at(self.daily).do(lambda: self.manager.get_tibber_daily_prices())
         # run boiler scheduler
-        self.scheduler.every().hour.at(self.hourly).do(lambda: self.manager.power_price())
+        self.scheduler.every().hour.at(self.hourly).do(lambda: self.manager.update_webcore_piston())
 
     def run(self):
         while True:

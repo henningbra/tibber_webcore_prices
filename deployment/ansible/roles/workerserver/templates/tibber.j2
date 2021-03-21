@@ -6,7 +6,7 @@ After=multi-user.target
 Type=idle
 
 WorkingDirectory={{ PROJECT_PATH }}
-ExecStart="{{ PROJECT_PATH }}"/venv/bin/python3 scheduler.py
+ExecStart="{{ PROJECT_PATH }}"/venv/bin/python scheduler.py
 
 [Install]
 WantedBy=multi-user.target

@@ -3,7 +3,7 @@
   apt:
     name: "{{ item }}"
     state: latest
-    update_cache: 86400
+    update_cache: yes
   loop:
     - python3-apt
     - python3-dev

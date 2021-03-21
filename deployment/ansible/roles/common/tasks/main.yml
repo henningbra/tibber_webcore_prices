@@ -28,11 +28,11 @@
   become: yes
   when: ufw.changed
 
-- name: Update and Upgrade all packages to the latest version
+- name: Upgrade all packages to the latest version
   apt:
     name: "*"
     update_cache: yes
-    cache_valid_time: 86400
+    cache_valid_time: yes
     state: latest
   become: yes
   register: apt
