@@ -6,6 +6,8 @@
 
 - name: start tibber
   systemd:
+    enabled: yes
     daemon_reload: yes
     state: restarted
+    name: tibber
   become: yes
