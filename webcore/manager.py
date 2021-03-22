@@ -29,7 +29,7 @@ class PriceManager:
                 return price
 
     def power_price(self):
-        if self.is_energy_price(high_prices=False, hours=4):
+        if self.is_energy_price(high_prices=False, hours=6):
             level = "CHEAP"
         elif self.is_energy_price(high_prices=True, hours=3):
             level = "EXPENSIVE"
