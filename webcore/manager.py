@@ -34,7 +34,8 @@ class PriceManager:
         elif self.is_energy_price(high_prices=True, hours=3):
             level = "EXPENSIVE"
         else:
-            level = "MODERATE2"
+            level = "MODERATE"
+
         logging.info(f'Prices are now at {level} level')
         return level
 
