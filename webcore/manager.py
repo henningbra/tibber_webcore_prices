@@ -13,25 +13,25 @@ class PriceManager:
         logging.info('Tibber API returned prices')
         self.update_webcore_piston()
 
-    def _sort(self, reverse=False) -> list(Price):
+    def _sort(self, reverse) -> list(Price):
         return sorted(self.prices, key=lambda x: x.total, reverse=reverse)
 
-    def _sort_prices(self, high_prices=True, hours=4) -> list(Price):
+    def _sort_prices(self, hours, high_prices) -> list(Price):
         return self._sort(reverse=high_prices)[0:hours]
 
     @staticmethod
     def _now_rounded() -> datetime.date:
         return datetime.datetime.now().replace(minute=0, second=0, microsecond=0)
 
-    def is_energy_price(self, hours, high_prices=False) -> bool:
+    def is_energy_price(self, hours, high_prices) -> bool:
         for price in self._sort_prices(high_prices, hours):
             if self._now_rounded() is price.starts_at:
                 return price
 
     def power_price(self):
-        if self.is_energy_price(high_prices=False, hours=6):
+        if self.is_energy_price(hours=6, high_prices=False):
             level = "CHEAP"
-        elif self.is_energy_price(high_prices=True, hours=3):
+        elif self.is_energy_price(hours=3, high_prices=True):
             level = "EXPENSIVE"
         else:
             level = "MODERATE"
