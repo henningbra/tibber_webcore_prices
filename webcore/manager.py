@@ -25,7 +25,8 @@ class PriceManager:
 
     def is_energy_price(self, hours, high_prices) -> bool:
         result = None
-        for price in self._sort_prices(high_prices, hours):
+        prices = self._sort_prices(high_prices, hours)
+        for price in prices:
             if self._now_rounded() is price.starts_at:
                 result = price
         return result
