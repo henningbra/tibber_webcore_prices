@@ -3,6 +3,7 @@ import logging
 from tibber.schema import Price
 from webcore.pusher import update_piston
 from tibber.queries import query_today_prices
+import settings
 
 
 class PriceManager:
@@ -21,20 +22,25 @@ class PriceManager:
 
     @staticmethod
     def _now_rounded() -> datetime.date:
-        return datetime.datetime.now().replace(minute=0, second=0, microsecond=0)
+        return datetime.datetime.now(settings.TZ).replace(minute=0, second=0, microsecond=0)
 
-    def is_energy_price(self, hours, high_prices) -> bool:
-        result = None
-        prices = self._sort_prices(high_prices, hours)
+    def _get_energy_price_now(self, prices: Price) -> Price:
+        result = False
         for price in prices:
-            if self._now_rounded() is price.starts_at:
-                result = price
+            if self._now_rounded() == price.starts_at:
+                result = True
         return result
 
-    def power_price(self):
-        if self.is_energy_price(hours=6, high_prices=False):
+    def get_expensive_energy_hours(self, hours):
+        return self._sort_prices(hours=hours, high_prices=True)
+
+    def get_cheap_energy_hours(self, hours):
+        return self._sort_prices(hours=hours, high_prices=False)
+
+    def get_power_price(self):
+        if self._get_energy_price_now(self.get_cheap_energy_hours(hours=6)):
             level = "CHEAP"
-        elif self.is_energy_price(hours=3, high_prices=True):
+        elif self._get_energy_price_now(self.get_expensive_energy_hours(hours=3)):
             level = "EXPENSIVE"
         else:
             level = "MODERATE"
@@ -42,11 +48,8 @@ class PriceManager:
         logging.info(f'Prices are now at {level} level')
         return level
 
-    def get_price_level_now(self):
-        return self.power_price()
-
     def update_webcore_piston(self):
-        return update_piston(level=self.get_price_level_now())
+        return update_piston(level=self.get_power_price())
 
     """
     To update the PriceManager instance daily with prices from Tibber 
@@ -59,6 +62,5 @@ class PriceManager:
 if __name__ == "__main__":
 
     manager = PriceManager()
-    print(manager.is_energy_price(hours=4))
-    print(manager.get_price_level_now())
+    print(manager.power_price())
 

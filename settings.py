@@ -1,4 +1,5 @@
 import os
+import pytz
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -12,3 +13,4 @@ TIBBER_HEADERS = {
 
 # My WebCore Piston
 PISTON_URL = TOKEN = os.getenv('PISTON_URL', default='your_secret_webcore_url_here')
+TZ = pytz.timezone('Europe/Oslo')
