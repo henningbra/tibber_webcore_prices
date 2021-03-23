@@ -24,7 +24,7 @@ class PriceManager:
     def _now_rounded() -> datetime.date:
         return datetime.datetime.now(settings.TZ).replace(minute=0, second=0, microsecond=0)
 
-    def _get_energy_price_now(self, prices: Price) -> Price:
+    def _get_energy_price_now(self, prices: Price):
         result = False
         for price in prices:
             if self._now_rounded() == price.starts_at:
