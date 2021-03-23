@@ -24,9 +24,11 @@ class PriceManager:
         return datetime.datetime.now().replace(minute=0, second=0, microsecond=0)
 
     def is_energy_price(self, hours, high_prices) -> bool:
+        result = None
         for price in self._sort_prices(high_prices, hours):
             if self._now_rounded() is price.starts_at:
-                return price
+                result = price
+        return result
 
     def power_price(self):
         if self.is_energy_price(hours=6, high_prices=False):
