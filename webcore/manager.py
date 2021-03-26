@@ -18,7 +18,8 @@ class PriceManager:
         return sorted(self.prices, key=lambda x: x.total, reverse=reverse)
 
     def _sort_prices(self, hours, high_prices) -> list(Price):
-        return self._sort(reverse=high_prices)[0:hours]
+        end = hours + 1  # correct offset for hours
+        return self._sort(reverse=high_prices)[0:end]
 
     @staticmethod
     def _now_rounded() -> datetime.date:
@@ -62,5 +63,5 @@ class PriceManager:
 if __name__ == "__main__":
 
     manager = PriceManager()
-    print(manager.power_price())
+    print(manager.get_power_price())
 
