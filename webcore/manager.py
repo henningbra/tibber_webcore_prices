@@ -25,32 +25,43 @@ class PriceManager:
     def _now_rounded() -> datetime.date:
         return datetime.datetime.now(settings.TZ).replace(minute=0, second=0, microsecond=0)
 
-    def _get_energy_price_now(self, prices: Price):
-        result = False
-        for price in prices:
-            if self._now_rounded() == price.starts_at:
-                result = True
-        return result
-
     def get_expensive_energy_hours(self, hours):
         return self._sort_prices(hours=hours, high_prices=True)
 
     def get_cheap_energy_hours(self, hours):
         return self._sort_prices(hours=hours, high_prices=False)
 
-    def get_power_price(self):
-        if self._get_energy_price_now(self.get_cheap_energy_hours(hours=6)):
-            level = "CHEAP"
-        elif self._get_energy_price_now(self.get_expensive_energy_hours(hours=3)):
-            level = "EXPENSIVE"
-        else:
-            level = "MODERATE"
+    def _get_energy_price_now(self, prices: Price):
+        result = None
+        for price in prices:
+            if self._now_rounded() == price.starts_at:
+                result = price
+        return result
 
-        logging.info(f'Prices are now at {level} level')
-        return level
+    def get_power_price(self):
+
+        cheap_price = self._get_energy_price_now(self.get_cheap_energy_hours(hours=6))
+        if cheap_price:
+            cheap_price.level = "CHEAP"
+            return cheap_price
+
+        expensive_price = self._get_energy_price_now(self.get_expensive_energy_hours(hours=3))
+        if expensive_price:
+            expensive_price.level = "CHEAP"
+            return expensive_price
+
+        moderate_price = self._get_energy_price_now(self.get_expensive_energy_hours(hours=24))
+        if moderate_price:
+            moderate_price.level = "MODERATE"
+            return moderate_price
 
     def update_webcore_piston(self):
-        return update_piston(level=self.get_power_price())
+        price = self.get_power_price()
+        data = dict(
+            total=price.total,
+            level=price.level
+        )
+        return update_piston(data)
 
     """
     To update the PriceManager instance daily with prices from Tibber 

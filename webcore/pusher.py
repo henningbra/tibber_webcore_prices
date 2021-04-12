@@ -2,8 +2,7 @@ import requests
 import settings
 
 
-def update_piston(level='UNKNOWN'):
-    data = dict(power=level)
+def update_piston(data):
     requests.post(settings.PISTON_URL, data=data)
     
 

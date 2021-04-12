@@ -18,3 +18,8 @@ def query_today_prices() -> list(Price):
     obj = op + json_data
 
     return obj.viewer.homes[0].current_subscription.price_info.today
+
+
+if __name__ == "__main__":
+    prices = query_today_prices()
+    print(prices)
