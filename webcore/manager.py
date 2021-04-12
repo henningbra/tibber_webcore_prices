@@ -18,27 +18,26 @@ class PriceManager:
         return sorted(self.prices, key=lambda x: x.total, reverse=reverse)
 
     def _sort_prices(self, hours, high_prices) -> list(Price):
-        end = hours + 1  # correct offset for hours
-        return self._sort(reverse=high_prices)[0:end]
+        return self._sort(reverse=high_prices)[0:hours]
 
     @staticmethod
     def _now_rounded() -> datetime.date:
         return datetime.datetime.now(settings.TZ).replace(minute=0, second=0, microsecond=0)
 
-    def get_expensive_energy_hours(self, hours):
+    def get_expensive_energy_hours(self, hours) -> list(Price):
         return self._sort_prices(hours=hours, high_prices=True)
 
-    def get_cheap_energy_hours(self, hours):
+    def get_cheap_energy_hours(self, hours) -> list(Price):
         return self._sort_prices(hours=hours, high_prices=False)
 
-    def _get_energy_price_now(self, prices: Price):
+    def _get_energy_price_now(self, prices: Price) -> Price:
         result = None
         for price in prices:
             if self._now_rounded() == price.starts_at:
                 result = price
         return result
 
-    def get_power_price(self):
+    def get_power_price(self) -> Price:
 
         cheap_price = self._get_energy_price_now(self.get_cheap_energy_hours(hours=6))
         if cheap_price:
