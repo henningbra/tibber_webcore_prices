@@ -47,7 +47,7 @@ class PriceManager:
 
         expensive_price = self._get_energy_price_now(self.get_expensive_energy_hours(hours=3))
         if expensive_price:
-            expensive_price.level = "CHEAP"
+            expensive_price.level = "EXPENSIVE"
             return expensive_price
 
         moderate_price = self._get_energy_price_now(self.get_expensive_energy_hours(hours=24))
