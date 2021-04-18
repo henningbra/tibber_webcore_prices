@@ -18,7 +18,7 @@ def query_today_prices() -> list(Price):
     json_data = None
     while json_data: 
         json_data = endpoint(op)
-        if json_data:
+        if not json_data:
             time.sleep(60)
     obj = op + json_data
 
