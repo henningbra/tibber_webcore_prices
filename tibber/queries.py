@@ -2,6 +2,7 @@ from sgqlc.endpoint.http import HTTPEndpoint
 from sgqlc.operation import Operation
 from tibber.schema import Query, Price
 import settings
+import time
 
 endpoint = HTTPEndpoint(settings.TIBBER_URL, settings.TIBBER_HEADERS)
 
@@ -14,7 +15,10 @@ def query_today_prices() -> list(Price):
     today = subscription.price_info.today
     today.__fields__('total', 'starts_at')
 
-    json_data = endpoint(op)
+    json_data = None
+    while json_data: 
+        json_data = endpoint(op)
+        time.sleep(60)
     obj = op + json_data
 
     return obj.viewer.homes[0].current_subscription.price_info.today
