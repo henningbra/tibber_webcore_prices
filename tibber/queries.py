@@ -16,7 +16,7 @@ def query_today_prices() -> list(Price):
     today.__fields__('total', 'starts_at')
 
     json_data = None
-    while json_data: 
+    while not json_data:
         json_data = endpoint(op)
         if not json_data:
             time.sleep(60)
