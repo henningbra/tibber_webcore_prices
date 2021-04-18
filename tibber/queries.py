@@ -18,7 +18,8 @@ def query_today_prices() -> list(Price):
     json_data = None
     while json_data: 
         json_data = endpoint(op)
-        time.sleep(60)
+        if json_data:
+            time.sleep(60)
     obj = op + json_data
 
     return obj.viewer.homes[0].current_subscription.price_info.today
