@@ -36,3 +36,12 @@
     state: latest
   become: yes
   register: apt
+
+- name: Maintenance Montly server reboot
+  ansible.builtin.cron:
+    name: "Monthly server reboot"
+    minute: "30"
+    hour: "1"
+    day: "1"
+    user: root
+    job: "sudo reboot"
