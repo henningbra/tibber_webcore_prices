@@ -44,4 +44,4 @@
     hour: "1"
     day: "1"
     user: root
-    job: "sudo reboot"
+    job: "sudo reboot now "CRON Monthly maintenance reboot in progress"
