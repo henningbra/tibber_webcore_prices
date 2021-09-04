@@ -40,3 +40,4 @@
     dest: "{{ PROJECT_PATH }}/.env"
   become: yes
   when: project.changed
+

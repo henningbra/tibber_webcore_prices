@@ -11,3 +11,14 @@
     state: restarted
     name: tibber
   become: yes
+
+# @TODO job fails when pulling data from Tibber API around midnight ocassionally, this is a workaround.
+- name: Ensure job restarted daily
+  ansible.builtin.cron:
+    name: "Tibber restarted daily"
+    minute: "1"
+    hour: "1"
+    user: root
+    job: "sudo systemctl restart tibber"
+  become: yes
+
