@@ -39,7 +39,7 @@ class PriceManager:
 
     def get_power_price(self) -> Price:
 
-        cheap_price = self._get_energy_price_now(self.get_cheap_energy_hours(hours=6))
+        cheap_price = self._get_energy_price_now(self.get_cheap_energy_hours(hours=4))
         if cheap_price:
             cheap_price.level = "CHEAP"
             return cheap_price
