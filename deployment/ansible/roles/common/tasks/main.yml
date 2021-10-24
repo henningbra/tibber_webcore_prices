@@ -2,18 +2,18 @@
 
 
 - name: Set timezone to Europe/Oslo
-  timezone:
+  ansible.builtin.timezone:
     name: Europe/Oslo
   become: yes
 
 - name: Enable firewall
-  ufw:
+  ansible.builtin.ufw:
     state: enabled
   become: yes
   register: ufw
 
 - name: Open SSH and close all other ports
-  ufw:
+  ansible.builtin.ufw:
     rule: allow
     name: OpenSSH
     policy: deny
@@ -21,7 +21,7 @@
   when: ufw.changed
 
 - name: Throttle brute force SSH login attepmpts
-  ufw:
+  ansible.builtin.ufw:
     rule: limit
     port: ssh
     proto: tcp
@@ -29,7 +29,7 @@
   when: ufw.changed
 
 - name: Upgrade all packages to the latest version
-  apt:
+  ansible.builtin.apt:
     name: "*"
     update_cache: yes
     cache_valid_time: yes
