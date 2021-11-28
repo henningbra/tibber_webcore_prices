@@ -30,7 +30,7 @@ class PriceManager:
         # Get Tibber prices
         self.prices = query_today_prices()
         # Update with new network prices
-        self.prices = update_daily_network_prices(self.prices)
+        #self.prices = update_daily_network_prices(self.prices)
         logging.info('Tibber API returned prices')
         self.update_webcore_piston()
 
