@@ -14,3 +14,7 @@ TIBBER_HEADERS = {
 # My WebCore Piston
 PISTON_URL = TOKEN = os.getenv('PISTON_URL', default='your_secret_webcore_url_here')
 TZ = pytz.timezone('Europe/Oslo')
+network_price_zones = {
+    'low': -0.08,
+    'high': 0.16
+}

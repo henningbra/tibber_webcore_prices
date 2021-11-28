@@ -6,11 +6,31 @@ from tibber.queries import query_today_prices
 import settings
 
 
+def update_daily_network_prices(prices) -> list:
+
+    updated_prices = list()
+
+    for price in prices:
+        if price.starts_at.hour <= 6 or price.starts_at.hour >= 22:
+            # If morning or late evening minus 8 øre
+            price.total = price.total - network_price_zones['low']
+        else:
+            # if rest of day pluss 16 øre
+            price.total = price.total + network_price_zones['low']
+
+        updated_prices.append(price)
+
+    return updated_prices
+
+
 class PriceManager:
     
     def __init__(self):
         logging.info('Tibber API queried')
+        # Get Tibber prices
         self.prices = query_today_prices()
+        # Update with new network prices
+        self.prices = update_daily_network_prices(self.prices)
         logging.info('Tibber API returned prices')
         self.update_webcore_piston()
 
